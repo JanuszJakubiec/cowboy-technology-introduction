@@ -1,0 +1,43 @@
+<html>
+  <head><meta charset='utf-8'></head>
+  <body>
+    <form>
+    <input type='text' name = 'data' id = 'data'>
+    <input type="button" value="Pobierz (GET)" onclick="change_time_get()"></input>
+    <input type="button" value="Pobierz (POST)" onclick="change_time_post()"></input>
+    </form>
+    <span id = 'result'></span> <br></br>
+    <script>
+    function change_time_get(){
+      change_result("Pending");
+      fetch("http://test1.prez:8080/sum_numbers/" + encodeURIComponent(document.getElementById('data').value))
+      .then(function (response){
+        response.text().then((value) =>{
+          change_result(value);
+        });
+      });
+    }
+
+    function change_time_post(){
+      change_result("Pending");
+      var header = new Headers();
+      header.append("Content-Type", "application/x-www-form-urlencoded");
+      fetch("http://test1.prez:8080/sum_numbers", {
+        method: 'POST',
+        header: header,
+        body: document.getElementById('data').value
+      })
+      .then(function (response){
+        response.text().then((value) =>{
+          change_result(value);
+        });
+      });
+    }
+
+    function change_result(text1)
+    {
+      document.getElementById('result').innerHTML = text1;
+    }
+    </script>
+  </body>
+</html>
